@@ -1,6 +1,7 @@
 package dev.margus.movie_expert_ai.controller;
 
 import dev.margus.movie_expert_ai.model.MovieResponse;
+import dev.margus.movie_expert_ai.tool.MovieTools;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.web.bind.annotation.*;
@@ -10,15 +11,17 @@ import org.springframework.web.bind.annotation.*;
 public class ChatController {
 
     private final ChatClient chatClient;
+    private final MovieTools movieTools;
 
-    public ChatController(ChatClient chatClient) {
+    public ChatController(ChatClient chatClient, MovieTools movieTools) {
         this.chatClient = chatClient;
+        this.movieTools = movieTools;
     }
 
     @GetMapping("/suggestions/{genre}")
-    public MovieResponse getMethodName(@PathVariable String genre, @RequestParam(defaultValue = "default-session") String chatId) {
+    public MovieResponse getMoviesByGenre(@PathVariable String genre, @RequestParam(defaultValue = "default-session") String chatId) {
 
-        MovieResponse result = chatClient.prompt()
+        return chatClient.prompt()
                 .user(u -> u.text("""
                                 Suggest 5 movies for the genre {genre}.
                                 CRITICAL: Check the JSON history above for previous suggestions. Do NOT suggest any movie title that has already appeared in the conversation history.
@@ -28,6 +31,14 @@ public class ChatController {
                 .call()
                 .entity(MovieResponse.class);
 
-        return result;
+    }
+
+    @GetMapping("/chat")
+    public String getMovieInfo(@RequestParam String message) {
+        return chatClient.prompt()
+                .user(message)
+                .tools(movieTools)
+                .call()
+                .content();
     }
 }
