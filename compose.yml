@@ -1,0 +1,9 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=movie_expert
+      - POSTGRES_PASSWORD=movie_expert_psw
+      - POSTGRES_DB=moviedb

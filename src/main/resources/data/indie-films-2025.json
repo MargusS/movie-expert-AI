@@ -1,0 +1,26 @@
+[
+  {
+    "title": "The Silent Echo",
+    "year": 2025,
+    "director": "Elena Vance",
+    "genre": "Psychological Thriller",
+    "synopsis": "A sound engineer discovers a frequency that allows him to hear the thoughts of people in his building, leading him to uncover a murder plot.",
+    "rating": "8.5/10"
+  },
+  {
+    "title": "Neon Garden",
+    "year": 2025,
+    "director": "Kaito Sato",
+    "genre": "Cyberpunk Drama",
+    "synopsis": "In a city where plants are illegal, a young botanist runs an underground greenhouse that becomes the center of a resistance movement.",
+    "rating": "9.0/10"
+  },
+  {
+    "title": "Canvas of Time",
+    "year": 2025,
+    "director": "Marco Bellini",
+    "genre": "Romance / Sci-Fi",
+    "synopsis": "A painter discovers that his portraits age instead of his subjects. He falls in love with a woman who begs him to paint her to save her from a terminal illness.",
+    "rating": "7.8/10"
+  }
+]
