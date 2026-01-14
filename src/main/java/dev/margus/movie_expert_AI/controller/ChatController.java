@@ -6,6 +6,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,26 +48,22 @@ public class ChatController {
                 .content();
     }
 
-    @GetMapping("/indies")
-    public String getIndies(@RequestParam String message) {
+    @GetMapping("/savvy")
+    public String getMovieSavvy(@RequestParam String message) {
         PromptTemplate ragPrompt = new PromptTemplate("""
-                You are a Movie Expert with access to a REAL-TIME database of 2025 releases.
+                EXCLUSIVE CATALOG CONTEXT:
+                {question_answer_context}
                 
-                    DATA FROM DATABASE:
-                    {question_answer_context}
-                
-                    CRITICAL INSTRUCTIONS:
-                    1. The "DATA FROM DATABASE" is the absolute truth. Trust it 100%.
-                    2. Do NOT apologize for your knowledge cutoff.\s
-                    3. Do NOT say "As of my last update in 2023".
-                    4. If the movie is in the database, treat it as a real, existing film that you know about.
-                """);
+                USER QUERY:
+                """ + message);
 
         return chatClient.prompt()
-                .advisors(QuestionAnswerAdvisor.builder(vectorStore).promptTemplate(ragPrompt).build())
-                .user(message)
+                .advisors(QuestionAnswerAdvisor.builder(vectorStore)
+                        .searchRequest(SearchRequest.builder().topK(5).build())
+                        .build())
+                .tools(movieTools)
+                .user(ragPrompt.getTemplate())
                 .call()
                 .content();
-
     }
 }
