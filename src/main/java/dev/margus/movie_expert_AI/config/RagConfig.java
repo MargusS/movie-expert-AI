@@ -42,13 +42,8 @@ public class RagConfig {
                     "title", "genre", "synopsis", "year", "director");
 
             List<Document> documents = jsonReader.get();
-            System.out.println("Document list of raw json");
-            System.out.println(documents);
-            System.out.println("-----------------------------");
             TokenTextSplitter tokenTextSplitter = new TokenTextSplitter();
             List<Document> splitDocuments = tokenTextSplitter.apply(documents);
-            System.out.println("Document splitted by tokens");
-            System.out.println(splitDocuments);
 
             vectorStore.add(splitDocuments);
 
